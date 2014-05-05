@@ -17,6 +17,10 @@ ActiveRecord::Schema.define(version: 20140505042629) do
   enable_extension "plpgsql"
 
   create_table "inspections", force: true do |t|
+    t.integer  "restaurant_id",                           null: false
+    t.date     "inspection_date"
+    t.decimal  "score",           precision: 8, scale: 2
+    t.string   "url"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -26,10 +30,11 @@ ActiveRecord::Schema.define(version: 20140505042629) do
     t.string   "street"
     t.string   "city"
     t.string   "county"
+    t.string   "state"
     t.string   "zipcode"
     t.string   "site_id"
     t.string   "website"
-    t.string   "latlon",     limit: nil, null: false
+    t.string   "latlon",     limit: nil
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -37,7 +42,7 @@ ActiveRecord::Schema.define(version: 20140505042629) do
   create_table "violations", force: true do |t|
     t.integer  "inspection_id"
     t.text     "violation_text"
-    t.decimal  "point_decution", precision: 8, scale: 2
+    t.decimal  "point_deduction", precision: 8, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end

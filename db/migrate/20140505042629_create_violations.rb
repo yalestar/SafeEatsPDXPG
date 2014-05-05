@@ -3,7 +3,7 @@ class CreateViolations < ActiveRecord::Migration
     create_table :violations do |t|
       t.integer :inspection_id
       t.text :violation_text
-      t.decimal :point_decution, :precision => 8, :scale => 2
+      t.decimal :point_deduction, :precision => 8, :scale => 2
       t.timestamps
     end
   end

@@ -102,12 +102,14 @@ class ClackamasParser
         if m = csz.match(/([A-Z ]*), (OR) (97\d{3})/)
           city = titleize(m[1]).strip
           zip = m[3]
-          restaurant = Restaurant.create(:name => name, :street => street, 
-          :city => city, :state => state,
-          :zip => zip, :county => county)
+          restaurant = Restaurant.create(
+            name: name, street: street, 
+            city: city, state: state,
+            zipcode: zip, county: county
+          )
 
         else  
-          restaurant = Restaurant.create(:name => name, :state => state, :county => county)
+          restaurant = Restaurant.create(name: name, state: state, county: county)
 
         end
 
@@ -138,13 +140,13 @@ class ClackamasParser
               vio = k.first.text
               pd = k.last.text
               
-              violations << Violation.new(:violation_text => vio, :point_deduction => pd)
+              violations << Violation.new(violation_text: vio, point_deduction: pd)
             end           
 
-            inspection = Inspection.new(:inspection_date => idate, 
-                                        :score => score.split(":").last.to_i,
-                                        :url => i.href, 
-                                        :violations => violations)
+            inspection = Inspection.new(inspection_date: idate, 
+                                        score: score.split(":").last.to_i,
+                                        url: i.href, 
+                                        violations: violations)
 
             restaurant.inspections << inspection
             restaurant.save

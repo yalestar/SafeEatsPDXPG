@@ -116,12 +116,12 @@ class MultnomahParser
 
 		def fetch_restaurants
 			search_page = @agent.get("http://www3.multco.us/MCHealthInspect/ListSearch.aspx")
-			index_page = search_page.forms.first.submit( search_page.forms.first.buttons.first )
+			index_page = search_page.forms.first.submit(search_page.forms.first.buttons.first)
 
 			loop do
 				# this step loads all the Multnomah restaurants into the DB.
 				# the inspection parsing comes subsequently
-				Nokogiri::HTML( index_page.body ).search('#ResultsDataGrid tr').each do |row|
+				Nokogiri::HTML(index_page.body).search('#ResultsDataGrid tr').each do |row|
 					if restaurant_data = parse_index_row(row)
 						
 						# probably an empty first row
@@ -130,7 +130,7 @@ class MultnomahParser
 						restaurant = Restaurant.create(:name => restaurant_data[:name], 
 						:street => restaurant_data[:street_address], 
 						:city => restaurant_data[:city], :state => restaurant_data[:state],
-						:zip => restaurant_data[:zip_code], :county => "Multnomah", :site_id => restaurant_data[:id])
+						:zipcode => restaurant_data[:zip_code], :county => "Multnomah", :site_id => restaurant_data[:id])
 						
 						puts "Saved: #{restaurant_data[:name]}"
 					end

@@ -5,10 +5,11 @@ class CreateRestaurants < ActiveRecord::Migration
       t.string :street
       t.string :city
       t.string :county
+      t.string :state
       t.string :zipcode
       t.string :site_id
       t.string :website
-      t.column :latlon, :point, :null => false
+      t.column :latlon, :point
       t.timestamps
     end
   end

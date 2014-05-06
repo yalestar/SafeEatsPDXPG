@@ -156,7 +156,7 @@ class MultnomahParser
 		end # fetch_restaurants
 
 
-		def parse_inspection_page(inspection_page)
+		def parse_inspection_page(inspection_page, restaurant)
 			doc = Nokogiri::HTML(inspection_page.body)
 			rows = doc.search('#DetailsView table tr').map{|row| 
 				row.search('td, th').map{ |cell| 
@@ -182,12 +182,12 @@ class MultnomahParser
 			end
 
 			inspection = Inspection.new(
-				:inspection_id => summary["Inspection#"],
+				:internal_id => summary["Inspection#"],
 				:inspection_type => summary["Type"],
 				:url => inspection_page.uri.to_s,
 				:inspection_date => Date.strptime(summary["Date"], "%m/%d/%Y").to_s,
 				:score => summary["Final Score"].to_i > 0 ? summary["Final Score"].to_i : nil,
-				:notes => notes
+				:notes => notes.to_s
 			)
 
 			violations.each do |vio|
@@ -200,15 +200,15 @@ class MultnomahParser
 					inspection.violations << vio
 				end					
 			end
-			inspection.save
+
 			inspection
 		end # parse_inspection_page
 
 		
 		def fetch_inspections 
 			# change this for getting updated inspections
-			#  currently just for getting missed ones
-			no_inspections = Restaurant.where(:county => "Multnomah", :inspections => {'$size' => 0 })
+			# currently just for getting missed ones
+			no_inspections = Restaurant.without_inspections
 			no_inspections.each do |r|
 				fetch_inspections_for(r)
 			end	
@@ -218,14 +218,14 @@ class MultnomahParser
 		def fetch_inspections_for(restaurant)
 			
 			url = "http://www3.multco.us/MCHealthInspect/ListSearch.aspx?id=#{restaurant.site_id}"
-			puts "Fetching inspections for #{restaurant['name']} at #{url}"
+			puts "Fetching inspections for #{restaurant.name} at #{url}"
 			inspection_page = @agent.get(url)
 
 			inspection_count = inspection_page.search('span#Label4 b').text.to_i
 			puts "Should be #{inspection_count}"
 			if inspection_count > 0
 				loop do
-					inspection = parse_inspection_page(inspection_page)
+					inspection = parse_inspection_page(inspection_page, restaurant)
 					restaurant.inspections << inspection
 					restaurant.save
 					puts "Saved: #{restaurant.inspect}"

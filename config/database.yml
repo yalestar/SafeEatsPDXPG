@@ -5,7 +5,7 @@ development:
   schema_search_path: public,postgis
   # adapter: postgresql
   database: safe_eats_pdx_dev
-  database: skunk_tmp
+  # database: skunk_tmp
   # encoding: utf8
   host: localhost
   username: r622233

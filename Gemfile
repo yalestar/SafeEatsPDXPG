@@ -20,5 +20,5 @@ gem 'jbuilder', '~> 1.2'
 group :development do 
     gem 'faker'
     gem 'pry'
-    gem 'pry-debugger'
+    # gem 'pry-debugger'
 end

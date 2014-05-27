@@ -10,7 +10,6 @@ class ClackamasParser
       str.split(/(\W)/).map(&:capitalize).join
     end
 
-
     def run_parser
       url = 'http://web3.clackamas.us/healthapp/ri.jsp'
 
@@ -21,7 +20,7 @@ class ClackamasParser
       report = page.forms.first.submit
       inspection_links = report.links.select { |l| l.href =~ /rim\.jsp\?q_ID=\d+/ }
 
-      inspection_links.first(10).each do |i|
+      inspection_links.each do |i|
 
         restaurant_page = i.click
         # main info is in the first p tag

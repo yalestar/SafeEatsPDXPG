@@ -9,7 +9,9 @@ class CreateRestaurants < ActiveRecord::Migration
       t.string  :zipcode
       t.string  :site_id
       t.string  :website
-      t.point  :latlon, :srid => 4326
+      t.decimal :lon, :precision => 10, :scale => 6
+      t.decimal :lat, :precision => 10, :scale => 6
+      t.geometry  :location, :srid => 4326
       t.integer :inspections_count, :default => 0
       t.timestamps
     end

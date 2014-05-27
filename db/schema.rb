@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 20140505042629) do
   end
 
   create_table "restaurants", force: true do |t|
-    t.string   "name",                                                                null: false
+    t.string   "name",                                                                                            null: false
     t.string   "street"
     t.string   "city"
     t.string   "county"
@@ -38,10 +38,12 @@ ActiveRecord::Schema.define(version: 20140505042629) do
     t.string   "zipcode"
     t.string   "site_id"
     t.string   "website"
-    t.integer  "inspections_count",                                       default: 0
+    t.decimal  "lon",                                                        precision: 10, scale: 6
+    t.decimal  "lat",                                                        precision: 10, scale: 6
+    t.integer  "inspections_count",                                                                   default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.spatial  "latlon",            limit: {:srid=>4326, :type=>"point"}
+    t.spatial  "location",          limit: {:srid=>4326, :type=>"geometry"}
   end
 
   create_table "violations", force: true do |t|

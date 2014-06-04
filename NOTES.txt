@@ -2,3 +2,7 @@ https://github.com/rgeo/activerecord-postgis-adapter
 http://ngauthier.com/2013/08/postgis-and-rails-a-simple-approach.html
 http://postgis.net/docs/manual-2.1/using_postgis_dbmanagement.html#PostGIS_Geography
 http://www.kyngchaos.com/software/qgis
+
+Host own tiles?
+	http://switch2osm.org/serving-tiles/
+	http://wiki.openstreetmap.org/wiki/Tiledrawer

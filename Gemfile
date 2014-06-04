@@ -20,6 +20,6 @@ gem 'jbuilder', '~> 1.2'
 group :development do
   gem 'faker'
   gem 'pry'
-  gem 'mongo'
-    # gem 'pry-debugger'
+  # gem 'mongo'
+    gem 'pry-debugger'
 end

@@ -9,6 +9,7 @@ end
 def parse_restaurant_page(url)
   # e.g. http://web3.clackamas.us/healthapp/rim.jsp?q_ID=0310262A&q_iID=59512621
   agent = Mechanize.new
+  
   page = agent.get(url)
   rblock = page.search("//div[@id='content']/p[1]").to_s.split("<br>")
   name = Nokogiri::HTML(rblock[0]).text
@@ -32,58 +33,19 @@ def parse_restaurant_page(url)
     puts "zip: #{zip}"
   end
 
+  # get the inspection on this page and then all the others listed
+  this_inspection_name = page.search("#content > p:nth-child(5)")
+  inspection_table = page.search("//table")
 end
+
 
 def get_inspection(page)
   
 end
+
+
 def run_parser(url)
-  agent = Mechanize.new
-  page = agent.get(url)
-
-  # submit the form with no criteria
-  report = page.forms.first.submit
-
-  # main info is in the first p tag
-  info_block = report.parser.search("//p[1]")
-
-  name = info_block.first.children.first.text
-  street = info_block.children[2].text
-
-  if !info_block.children[4].text.empty?
-    csz = info_block.children[4].text.strip
-  else
-    csz = info_block.children[5].text.strip
-  end
-  csz.gsub!("\r\n", "")
-  # spaces in the returned string are actually nbsp
-  nbsp = Nokogiri::HTML("&nbsp;").text
-  csz.gsub!(nbsp, " ")
-
-  county = "Clackamas"
-  state = "OR"
-
-  r = nil
-  if m = csz.match(/([A-Z ]*), (OR) (97\d{3})/)
-    city = titleize(m[1]).strip
-    zip = m[3]
-    # restaurant = Restaurant.create(:name => name, :street => street,
-    #                                :city => city, :state => state,
-    #                                :zip => zip, :county => county)
-    puts "name: #{name}"
-    puts "street: #{street}"
-    puts "city: #{city}"
-    puts "state: #{state}"
-    puts "zip: #{zip}"
-  else
-    # restaurant = Restaurant.create(:name => name, :state => state, :county => county)
-    puts "name: #{name}"
-    puts "street: #{street}"
-    puts "city: #{city}"
-    puts "state: #{state}"
-    puts "zip: #{zip}"
-  end
-
+  
   inspection_links = report.links.select { |l| l.href =~ /rim\.jsp\?q_ID=\d+/ }
   inspection_links.each do |i|
     idate = i.text
